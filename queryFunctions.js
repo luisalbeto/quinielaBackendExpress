@@ -1,4 +1,4 @@
-const db = require('./mysqlConnection');
+const { db } = require('./mysqlConnection');
 
 // Función para ejecutar una consulta
 const query = async (sql, params) => {
