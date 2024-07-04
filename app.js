@@ -3,12 +3,14 @@ const { createTables } = require('./mysqlConnection');
 const userRoutes = require('./routes/userRoutes');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-
+var cors = require('cors')
 dotenv.config();
 
 const app = express();
 
 // Middleware
+app.use(cors())
+
 app.use(express.json());
 
 // Routes
