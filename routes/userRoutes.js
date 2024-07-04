@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const dotenv = require('dotenv');
+const authenticateToken = require('../middlewares/authMiddleware');
 
 dotenv.config();
 
@@ -34,15 +35,14 @@ router.post('/login', async (req, res) => {
   const sql = `SELECT * FROM users WHERE email = '${email}'`;
   try {
     const result = await query(sql);
-    console.log(result)
     if (result.length > 0) {
         // Validate password
       const isMatch = await bcrypt.compare(password, result[0].password);
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid password' });
       }
-      const token = jwt.sign({ email: result[0].email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.status(200).json({ message: 'Login successful', token });
+      const token = jwt.sign({ email: result[0].email, id: result[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.status(200).json({ message: 'Login successful', token, user: result[0] });
     } else {
       res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Route: /api/users
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   const sql = 'SELECT * FROM users';
   try {
     const result = await query(sql);

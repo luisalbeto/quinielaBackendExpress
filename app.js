@@ -1,6 +1,8 @@
 const express = require('express');
 const { createTables } = require('./mysqlConnection');
 const userRoutes = require('./routes/userRoutes');
+const scoreRoutes = require('./routes/scoreRoutes');
+
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 var cors = require('cors')
@@ -15,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/', scoreRoutes)
 
 // Start server
 const PORT = process.env.PORT || 3000;
