@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const result = await query(`INSERT INTO users (password, email) VALUES (${hashedPassword}, ${email})`);
+    const result = await query(`INSERT INTO users (password, email) VALUES ('${hashedPassword}', '${email}')`);
     res.status(201).json({ message: 'User registered successfully', user: result[0] });
   } catch (error) {
     console.log(error)
@@ -63,3 +63,9 @@ router.get('/', authenticateToken, async (req, res) => {
 });
 
 module.exports = router;
+/*
+
+curl -X GET http://localhost:3001/api/scores \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJiQGdtYWlsLmNvbSIsImlkIjo5LCJpYXQiOjE3MjAwNjQ3MzksImV4cCI6MTcyMDA2ODMzOX0.flui0b9jVCWdi2fZ6kJaxXbIDp0QMR1lkuddSqf1OYY" \
+     -d '{"localteam": "TeamA", "awayteam": "TeamB", "scoreLocalteam": 1, "scoreAwayteam": 2}'*/

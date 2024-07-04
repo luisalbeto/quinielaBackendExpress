@@ -17,7 +17,7 @@ router.post('/scores', authenticateToken, async (req, res) => {
     const { localteam, awayteam, scoreLocalteam, scoreAwayteam } = req.body;
     const userId = req.user.id;
     const result = await query(
-        `INSERT INTO scores (localteam, awayteam, scoreLocalteam, scoreAwayteam, userId) VALUES ('${localteam}', '${awayteam}', ${scoreLocalteam}}, ${scoreAwayteam}, ${userId});`
+        `INSERT INTO scores (localteam, awayteam, scoreLocalteam, scoreAwayteam, userId) VALUES ('${localteam}', '${awayteam}', ${scoreLocalteam}, ${scoreAwayteam}, ${userId});`
     );
     res.status(201).send({ message: 'Score saved successfully' });
   } catch (error) {
@@ -28,8 +28,8 @@ router.post('/scores', authenticateToken, async (req, res) => {
 // Consultar scores con el email del usuario
 router.get('/scores', authenticateToken, async (req, res) => {
   try {
-    const [scores] = await query(`
-      SELECT scores.id as scoreId, scores.localteam as localteam, scores.awayteam as awayteam, scores.scoreLocalteam as scoreLocalteam, scores.scoreAwayteam as scoreAwayteam, users.email as email
+    const scores = await query(`
+      SELECT users.id as userId, scores.id as scoreId, scores.localteam as localteam, scores.awayteam as awayteam, scores.scoreLocalteam as scoreLocalteam, scores.scoreAwayteam as scoreAwayteam, users.email as email
       FROM scores
       JOIN users ON scores.userId = users.id
     `);
