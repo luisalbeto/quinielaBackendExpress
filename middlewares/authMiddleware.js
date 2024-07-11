@@ -5,10 +5,11 @@ dotenv.config();
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
 
+  const token = authHeader
+  
   if (!token) {
-    return res.sendStatus(401); // Unauthorized
+    return res.sendStatus(500); // Unauthorized
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

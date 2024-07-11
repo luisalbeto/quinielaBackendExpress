@@ -15,7 +15,10 @@ dotenv.config();
 router.post('/scores', authenticateToken, async (req, res) => {
   try {
     const { localteam, awayteam, scoreLocalteam, scoreAwayteam } = req.body;
-    const userId = req.user.id;
+    const user = jwt.verify(req.headers.authorization, process.env.JWT_SECRET )
+    const userId =user ? req.user.id: null;
+
+    
     const result = await query(
         `INSERT INTO scores (localteam, awayteam, scoreLocalteam, scoreAwayteam, userId) VALUES ('${localteam}', '${awayteam}', ${scoreLocalteam}, ${scoreAwayteam}, ${userId});`
     );
