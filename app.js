@@ -11,9 +11,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: 'https://quiniela2024crazy.vercel.app/auth-server-action',
-}))
+app.use(cors())
 
 app.use(express.json());
 
